@@ -1,9 +1,10 @@
 package com.osiragames.moviebase;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,8 +14,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.osiragames.moviebase.models.Movie;
+import com.osiragames.moviebase.models.ResponseMovies;
+import com.osiragames.moviebase.retroInterface.RetroAPI;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +33,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -40,6 +42,44 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        //checking for the internet connectivity
+
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        String api_key = getResources().getString(R.string.api_key);
+        if(!api_key.equalsIgnoreCase("")) {
+            //have the api key
+            if (isConnected) {
+                //has connected to internet
+                RetroAPI apiInterface = Controller.getClient().create(RetroAPI.class);
+                apiInterface.getTopRatedMovies(api_key).enqueue(new Callback<ResponseMovies>() {
+                    @Override
+                    public void onResponse(Call<ResponseMovies> call, Response<ResponseMovies> response) {
+                        if(response.isSuccessful()){
+                            Log.d(TAG, "onResponse: recived the top rated movies");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseMovies> call, Throwable t) {
+
+                    }
+                });
+
+            } else {
+                //not connected to internet
+            }
+        }else{
+            //doesnot have the api key
+        }
+
     }
 
     @Override
