@@ -1,6 +1,8 @@
 package com.osiragames.moviebase.retroInterface;
 
 import com.osiragames.moviebase.models.Movie;
+import com.osiragames.moviebase.models.MovieReviews;
+import com.osiragames.moviebase.models.MovieVideos;
 import com.osiragames.moviebase.models.ResponseMovies;
 
 import retrofit2.Call;
@@ -17,4 +19,12 @@ public interface RetroAPI {
 
     @GET("movie/{id}")
     Call<Movie> getMovieDetails(@Path("id") int id, @Query("api_key") String apiKey);
+
+    @GET("movie/{movie_id}/reviews")
+    Call<MovieReviews> getMovieReview(@Path("movie_id") int movie_id, @Query("api_key") String apikey);
+
+    @GET("movie/{movie_id}/videos")
+    Call<MovieVideos> getMovieVideos(@Path("movie_id") int movie_id, @Query("api_key") String apikey);
+
+
 }
