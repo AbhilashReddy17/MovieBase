@@ -14,8 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.osiragames.moviebase.MovieInterfaces.PopularMoviesListener;
+import com.osiragames.moviebase.MovieInterfaces.TopRatedMovieListener;
 import com.osiragames.moviebase.models.Movie;
 import com.osiragames.moviebase.models.ResponseMovies;
+import com.osiragames.moviebase.models.SingletonData;
 import com.osiragames.moviebase.retroInterface.RetroAPI;
 
 import retrofit2.Call;
@@ -58,20 +61,31 @@ public class MainActivity extends AppCompatActivity
             //have the api key
             if (isConnected) {
                 //has connected to internet
-                RetroAPI apiInterface = Controller.getClient().create(RetroAPI.class);
-                apiInterface.getTopRatedMovies(api_key).enqueue(new Callback<ResponseMovies>() {
+
+//                //top rated movies
+//                SingletonData.getMovieServices().getTopRatedMovies(api_key, new TopRatedMovieListener() {
+//                    @Override
+//                    public void setTopRatedMoviesResponse(ResponseMovies responseMovies) {
+//                        if(responseMovies != null){
+//
+//                        }
+//                    }
+//                });
+
+                //popular movies
+
+                MovieServices.getPopularMovies(api_key, new PopularMoviesListener(){
+
                     @Override
-                    public void onResponse(Call<ResponseMovies> call, Response<ResponseMovies> response) {
-                        if(response.isSuccessful()){
-                            Log.d(TAG, "onResponse: recived the top rated movies");
+                    public ResponseMovies setPopularMoviesResponse(ResponseMovies responseMovies) {
+                        if(responseMovies != null){
+
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseMovies> call, Throwable t) {
-
+                        return null;
                     }
                 });
+
+
 
             } else {
                 //not connected to internet
@@ -80,6 +94,10 @@ public class MainActivity extends AppCompatActivity
             //doesnot have the api key
         }
 
+    }
+
+    public interface MovieListener{
+        public void getTopRated();
     }
 
     @Override
