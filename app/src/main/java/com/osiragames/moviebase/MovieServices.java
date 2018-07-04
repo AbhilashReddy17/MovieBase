@@ -9,7 +9,7 @@ import com.osiragames.moviebase.MovieInterfaces.TopRatedMovieListener;
 import com.osiragames.moviebase.models.MovieReviews;
 import com.osiragames.moviebase.models.MovieVideos;
 import com.osiragames.moviebase.models.ResponseMovies;
-import com.osiragames.moviebase.retroInterface.RetroAPI;
+import com.osiragames.moviebase.MovieInterfaces.RetroAPI;
 
 import retrofit2.Call;
 import retrofit2.Callback;

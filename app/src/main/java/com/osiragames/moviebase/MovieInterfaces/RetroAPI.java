@@ -1,4 +1,4 @@
-package com.osiragames.moviebase.retroInterface;
+package com.osiragames.moviebase.MovieInterfaces;
 
 import com.osiragames.moviebase.models.Movie;
 import com.osiragames.moviebase.models.MovieReviews;
