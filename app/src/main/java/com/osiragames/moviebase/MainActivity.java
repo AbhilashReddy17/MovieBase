@@ -68,48 +68,6 @@ public class MainActivity extends AppCompatActivity
 
                 pushToMainPage();
 
-//                //top rated movies
-//                MovieServices.getTopRatedMovies(api_key, new TopRatedMovieListener() {
-//                    @Override
-//                    public void response(ResponseMovies responseMovies) {
-//                        if (responseMovies != null) {
-//
-//                        }
-//                    }
-//                });
-
-                //popular movies
-
-//                MovieServices.getPopularMovies(api_key, new PopularMoviesListener() {
-//
-//                    @Override
-//                    public ResponseMovies response(ResponseMovies responseMovies) {
-//                        if (responseMovies != null) {
-//
-//                        }
-//                        return null;
-//                    }
-//                });
-
-//                int movie_id = 351286;
-                //Movie Reviews
-
-//                MovieServices.getMovieReviews(movie_id,api_key, new MovieReviewListener() {
-//                    @Override
-//                    public void response(MovieReviews movieReview) {
-//
-//                    }
-//                });
-
-//                //movie Videos
-//
-//                MovieServices.getMovieVideos(movie_id,api_key, new MovieVideoListener() {
-//                    @Override
-//                    public void response(MovieVideos movieVideos) {
-//
-//                    }
-//                });
-
 
             } else {
                 //not connected to internet
