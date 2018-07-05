@@ -33,23 +33,31 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.movie_poster,null,false);
-        MovieViewHolder holder = new MovieViewHolder(view);
-        return holder;
+            View view = LayoutInflater.from(context).inflate(R.layout.movie_poster, null, false);
+            MovieViewHolder holder = new MovieViewHolder(view);
+            return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Picasso.get()
-                .load(moviesList.get(position).getPosterPath())
+                .load("https://image.tmdb.org/t/p/w500"+moviesList.get(position).getPosterPath())
                 .placeholder(R.mipmap.ic_movieposter_holder)
-                .error(R.mipmap.ic_posterError)
-                .centerCrop()
+                .error(R.mipmap.ic_postererror)
                 .into(holder.poster);
+
+        holder.poster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
+        if(moviesList == null) return 0;
         return moviesList.size();
     }
 

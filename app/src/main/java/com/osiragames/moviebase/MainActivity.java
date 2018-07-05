@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         pager = findViewById(R.id.homepage_pager);
-        pager.setAdapter(new HomePagerAdapter(getSupportFragmentManager()));
+        pager.setAdapter(new HomePagerAdapter(getSupportFragmentManager(),this));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

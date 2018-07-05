@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.osiragames.moviebase.MovieInterfaces.PopularMoviesListener;
 import com.osiragames.moviebase.MovieInterfaces.TopRatedMovieListener;
@@ -29,6 +30,14 @@ import java.util.List;
 
 public class TopRatedMoviesFragment extends Fragment {
 
+    public static TopRatedMoviesFragment topRatedMoviesFragment;
+    ImageView nodata_imageview;
+
+    public static TopRatedMoviesFragment getInstance(){
+        if(topRatedMoviesFragment == null) topRatedMoviesFragment = new TopRatedMoviesFragment();
+        return topRatedMoviesFragment;
+    }
+
     RecyclerView recyclerView;
     @Nullable
     @Override
@@ -37,14 +46,18 @@ public class TopRatedMoviesFragment extends Fragment {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.movies_grid,null,false);
 
         recyclerView = view.findViewById(R.id.moviegrid_recyclerview_id);
+        nodata_imageview = view.findViewById(R.id.nodata_imageview_id);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 
         MovieServices.getTopRatedMovies(getResources().getString(R.string.api_key), new TopRatedMovieListener() {
             @Override
             public void response(ResponseMovies responseMovies) {
                 if(responseMovies != null){
+                    nodata_imageview.setVisibility(View.GONE);
                     List<SpecificMovieDetails> movieList = SingletonMovieList.getSpecificMovieDetailsList(responseMovies);
-                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(),GridLayoutManager.DEFAULT_SPAN_COUNT));
                     recyclerView.setAdapter(new MovieAdapter(getContext(),movieList));
+                }else {
+                    nodata_imageview.setVisibility(View.VISIBLE);
                 }
             }
         });
