@@ -23,7 +23,7 @@ import static com.osiragames.moviebase.Constants.MOVIE_ID;
 
 public class TrailerFragment extends Fragment {
 
-    public static ReviewFragment fragment;
+    public static TrailerFragment fragment;
     int movieId;
     RecyclerView recyclerView;
     @Nullable
@@ -50,8 +50,8 @@ public class TrailerFragment extends Fragment {
         return view;
     }
 
-    public static ReviewFragment getFragment(int movieId) {
-        if(fragment == null) fragment= new ReviewFragment();
+    public static TrailerFragment getFragment(int movieId) {
+        if(fragment == null) fragment= new TrailerFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(MOVIE_ID,movieId);
         fragment.setArguments(bundle);
