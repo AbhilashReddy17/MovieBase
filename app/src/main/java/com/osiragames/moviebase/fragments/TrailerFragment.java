@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.osiragames.moviebase.MovieInterfaces.MovieVideoListener;
 import com.osiragames.moviebase.MovieServices;
 import com.osiragames.moviebase.R;
-import com.osiragames.moviebase.models.MovieReviews;
 import com.osiragames.moviebase.models.MovieVideos;
 
 import java.util.ArrayList;
