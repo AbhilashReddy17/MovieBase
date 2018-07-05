@@ -2,32 +2,47 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<android.support.design.widget.AppBarLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="100"
-    >
-    <include layout="@layout/movie_basic_details"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="95"/>
-    <TextView
-        android:layout_weight="5"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        android:text="@string/more"
-        android:gravity="center"
-        android:layout_gravity="center"
-       />
-</android.support.design.widget.AppBarLayout>
+        android:layout_height="match_parent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true"
+        >
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp"
+            app:title="@string/collapsing_toolbar"
+          >
+
+            <include layout="@layout/movie_basic_details"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/appBar"
+        >
+        <android.support.v4.view.ViewPager
+            android:id="@+id/movie_details_viewpager_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ></android.support.v4.view.ViewPager>
 
     </android.support.v4.widget.NestedScrollView>
 

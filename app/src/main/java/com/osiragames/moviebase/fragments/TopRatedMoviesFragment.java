@@ -55,7 +55,9 @@ public class TopRatedMoviesFragment extends Fragment {
                 if(responseMovies != null){
                     nodata_imageview.setVisibility(View.GONE);
                     List<SpecificMovieDetails> movieList = SingletonMovieList.getSpecificMovieDetailsList(responseMovies);
-                    recyclerView.setAdapter(new MovieAdapter(getContext(),movieList));
+                    SingletonMovieList.setTopRatedMovies(movieList);
+                    //movie type 1 = popular movies, 2 = top rated movies
+                    recyclerView.setAdapter(new MovieAdapter(getContext(),movieList,2));
                 }else {
                     nodata_imageview.setVisibility(View.VISIBLE);
                 }

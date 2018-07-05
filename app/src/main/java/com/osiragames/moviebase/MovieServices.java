@@ -73,7 +73,6 @@ public class MovieServices {
             public void onResponse(Call<MovieReviews> call, Response<MovieReviews> response) {
                 if(response.isSuccessful()){
                     Log.d(TAG, "onResponse: recived the top rated movies");
-
                     movieReviewListener.response(response.body());
                 }else
                     movieReviewListener.response(null);
