@@ -12,12 +12,11 @@
         android:fitsSystemWindows="true"
         >
 
-
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="48dp"
@@ -28,6 +27,7 @@
             <include layout="@layout/movie_basic_details"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                app:layout_collapseMode="parallax"
                 />
 
         </android.support.design.widget.CollapsingToolbarLayout>

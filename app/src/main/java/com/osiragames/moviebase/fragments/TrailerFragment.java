@@ -7,12 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.osiragames.moviebase.MovieInterfaces.MovieVideoListener;
 import com.osiragames.moviebase.MovieServices;
 import com.osiragames.moviebase.PlayYoutubeVideo;
@@ -27,6 +31,8 @@ import static com.osiragames.moviebase.Constants.MOVIE_ID;
 import static com.osiragames.moviebase.Constants.VIDEO_ID;
 
 public class TrailerFragment extends Fragment {
+
+    public static final String TAG = TrailerFragment.class.getSimpleName();
 
     public static TrailerFragment fragment;
     int movieId;
@@ -74,7 +80,7 @@ public class TrailerFragment extends Fragment {
         @NonNull
         @Override
         public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.trailer_thumbnail_layout,null,false);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.trailer_thumbnail_layout,parent,false);
 
             return new ReviewViewHolder(view);
         }
@@ -82,11 +88,33 @@ public class TrailerFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ReviewViewHolder holder, final int position) {
             holder.movieTitle.setText(results.get(position).getName());
-            Picasso.get()
-                    .load(getResources().getString(R.string.movieposter_baseurl_w185)+results.get(position).getName())
-                    .placeholder(R.drawable.poster_notavailable)
-                    .error(R.mipmap.ic_postererror)
-                    .into(holder.posterThumbnail);
+
+            holder.posterThumbnail.initialize(results.get(position).getKey(), new YouTubeThumbnailView.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                    youTubeThumbnailLoader.setVideo(results.get(position).getKey());
+
+                    youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+                        @Override
+                        public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+                            //when thumbnail loaded successfully release the thumbnail loader as we are showing thumbnail in adapter
+                            youTubeThumbnailLoader.release();
+                        }
+
+                        @Override
+                        public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+                            //print or show error when thumbnail load failed
+                            Log.e(TAG, "Youtube Thumbnail Error");
+                            youTubeThumbnailLoader.release();
+                        }
+                    });
+                }
+
+                @Override
+                public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+
+                }
+            });
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -108,7 +136,7 @@ public class TrailerFragment extends Fragment {
 
     public class ReviewViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView posterThumbnail;
+        YouTubeThumbnailView posterThumbnail;
         TextView movieTitle;
         View itemView;
         public ReviewViewHolder(View itemView) {
