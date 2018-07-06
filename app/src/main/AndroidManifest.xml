@@ -26,6 +26,10 @@
         <activity android:name=".MovieDetailActivity"
             android:label="@string/movie_detail_activity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".PlayYoutubeVideo"
+            android:label="@string/play_youtuvideo_player"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

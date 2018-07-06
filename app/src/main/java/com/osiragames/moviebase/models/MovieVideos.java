@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class MovieVideos implements Serializable,Parcelable {
+public class MovieVideos implements Serializable, Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -31,8 +31,7 @@ public class MovieVideos implements Serializable,Parcelable {
             return (new MovieVideos[size]);
         }
 
-    }
-            ;
+    };
     private final static long serialVersionUID = -7448409581064711399L;
 
     protected MovieVideos(Parcel in) {
@@ -68,8 +67,7 @@ public class MovieVideos implements Serializable,Parcelable {
         return 0;
     }
 
-    public class Result implements Serializable, Parcelable
-    {
+    public class Result implements Serializable, Parcelable {
 
         @SerializedName("id")
         @Expose
@@ -109,8 +107,7 @@ public class MovieVideos implements Serializable,Parcelable {
                 return (new Result[size]);
             }
 
-        }
-                ;
+        };
         private final static long serialVersionUID = 6968870792877437879L;
 
         protected Result(Parcel in) {

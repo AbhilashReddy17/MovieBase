@@ -1,5 +1,6 @@
 package com.osiragames.moviebase.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,17 +10,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.osiragames.moviebase.MovieInterfaces.MovieVideoListener;
 import com.osiragames.moviebase.MovieServices;
+import com.osiragames.moviebase.PlayYoutubeVideo;
 import com.osiragames.moviebase.R;
 import com.osiragames.moviebase.models.MovieVideos;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.osiragames.moviebase.Constants.MOVIE_ID;
+import static com.osiragames.moviebase.Constants.VIDEO_ID;
 
 public class TrailerFragment extends Fragment {
 
@@ -75,7 +80,22 @@ public class TrailerFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ReviewViewHolder holder, final int position) {
+            holder.movieTitle.setText(results.get(position).getName());
+            Picasso.get()
+                    .load(getResources().getString(R.string.movieposter_baseurl_w185)+results.get(position).getName())
+                    .placeholder(R.drawable.poster_notavailable)
+                    .error(R.mipmap.ic_postererror)
+                    .into(holder.posterThumbnail);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), PlayYoutubeVideo.class);
+                    intent.putExtra(VIDEO_ID,results.get(position).getKey()+"");
+                    getContext().startActivity(intent);
+                }
+            });
 
         }
 
@@ -88,9 +108,14 @@ public class TrailerFragment extends Fragment {
 
     public class ReviewViewHolder extends RecyclerView.ViewHolder{
 
+        ImageView posterThumbnail;
+        TextView movieTitle;
+        View itemView;
         public ReviewViewHolder(View itemView) {
             super(itemView);
-
+            this.itemView = itemView;
+            posterThumbnail = itemView.findViewById(R.id.trailer_thumbnailid);
+            movieTitle = itemView.findViewById(R.id.image_video_name);
         }
     }
 }

@@ -4,16 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.osiragames.moviebase.adapters.MovieDetailPagerAdapter;
-import com.osiragames.moviebase.models.Movie;
 import com.osiragames.moviebase.models.SingletonMovieList;
 import com.osiragames.moviebase.models.SpecificMovieDetails;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -31,6 +29,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_details);
+
 
   movieType = getIntent().getIntExtra(MOVIE_TYPE,1);
         moview_pos = getIntent().getIntExtra(MOVIE_POSITION,1);
@@ -59,7 +58,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             viewPager.setAdapter(new MovieDetailPagerAdapter(getSupportFragmentManager(),movie.getMovieId(),this));
 
             Picasso.get()
-                    .load(getResources().getString(R.string.movieposter_baseurl)+movie.getPosterPath())
+                    .load(getResources().getString(R.string.movieposter_baseurl_w500)+movie.getPosterPath())
                     .placeholder(R.drawable.poster_notavailable)
                     .error(R.mipmap.ic_postererror)
                     .into(poster);
