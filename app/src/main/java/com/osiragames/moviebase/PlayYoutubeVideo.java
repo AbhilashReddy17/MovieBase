@@ -33,23 +33,26 @@ ImageView youtubeLogo,notfoundImage;
         notfoundImage = findViewById(R.id.youtube_video_notfound_id);
 
         playerView = findViewById(R.id.youtubeplayer_id);
-        playerView.initialize(Config.API_KEY, new YouTubePlayer.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                notfoundImage.setVisibility(View.GONE);
-                youtubeLogo.setVisibility(View.GONE);
-                youTubePlayer.cueVideo(videoId);
-                youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
-            }
+        if(Config.API_KEY != ""){
+            playerView.initialize(Config.API_KEY, new YouTubePlayer.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                    notfoundImage.setVisibility(View.GONE);
+                    youtubeLogo.setVisibility(View.GONE);
+                    youTubePlayer.cueVideo(videoId);
+                    youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
+                }
 
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+                @Override
+                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
-                notfoundImage.setVisibility(View.VISIBLE);
-                youtubeLogo.setVisibility(View.GONE);
-            }
-        });
+                    notfoundImage.setVisibility(View.VISIBLE);
+                    youtubeLogo.setVisibility(View.GONE);
+                }
+            });
 
-
+        }else{
+            notfoundImage.setVisibility(View.VISIBLE);
+            youtubeLogo.setVisibility(View.GONE);        }
     }
 }

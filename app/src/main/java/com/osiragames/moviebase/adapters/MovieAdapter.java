@@ -47,7 +47,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, final int position) {
         Picasso.get()
-                .load(context.getResources().getString(R.string.movieposter_baseurl_w185)+moviesList.get(position).getPosterPath())
+                .load(context.getResources().getString(R.string.movieposter_baseurl_w500)+moviesList.get(position).getPosterPath())
                 .placeholder(R.drawable.poster_notavailable)
                 .error(R.mipmap.ic_postererror)
                 .into(holder.poster);

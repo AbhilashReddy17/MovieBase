@@ -5,25 +5,43 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.osiragames.moviebase.adapters.MovieDetailPagerAdapter;
+import com.osiragames.moviebase.database.MovieDatabase;
+import com.osiragames.moviebase.models.Movie;
 import com.osiragames.moviebase.models.SingletonMovieList;
 import com.osiragames.moviebase.models.SpecificMovieDetails;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
-    public static final String MOVIE_POSITION ="pos_movie";
-    public static final String MOVIE_TYPE ="movie_type";
+    public static final String MOVIE_POSITION = "pos_movie";
+    public static final String MOVIE_TYPE = "movie_type";
 
     int movieType;
     int moview_pos;
     SpecificMovieDetails movie;
     ImageView poster;
-    TextView title,date,synopsis,rating;
+    TextView title, date, synopsis, rating;
     ViewPager viewPager;
+    ImageView fav_icon;
+    boolean clickedFav;
+
+    public boolean isClickedFav() {
+        return clickedFav;
+    }
+
+    public void setClickedFav(boolean clickedFav) {
+        this.clickedFav = clickedFav;
+    }
+
+    public boolean getClickedFav() {
+        return clickedFav;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,10 +49,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.movie_details);
 
 
-  movieType = getIntent().getIntExtra(MOVIE_TYPE,1);
-        moview_pos = getIntent().getIntExtra(MOVIE_POSITION,1);
+        movieType = getIntent().getIntExtra(MOVIE_TYPE, 1);
+        moview_pos = getIntent().getIntExtra(MOVIE_POSITION, 1);
 
-        switch (movieType){
+        switch (movieType) {
             //movie type 1 = popular movies, 2 = top rated movies
             case 1:
                 movie = SingletonMovieList.getInstance().getPopularMovies().get(moview_pos);
@@ -43,22 +61,25 @@ public class MovieDetailActivity extends AppCompatActivity {
             case 2:
                 movie = SingletonMovieList.getTopRatedMovies().get(moview_pos);
                 break;
-                default: movie = null;
+            default:
+                movie = null;
         }
 
-        poster= findViewById(R.id.moviebasic_details_posterid);
+        poster = findViewById(R.id.moviebasic_details_posterid);
         title = findViewById(R.id.moviebasic_details_titleid);
         rating = findViewById(R.id.moviebasic_detials_ratingid);
         synopsis = findViewById(R.id.moviebasic_details_synopsisid);
         date = findViewById(R.id.moviebasic_details_releasdateid);
+        fav_icon = findViewById(R.id.fav_icon);
+        clickedFav = false;
 
-        if(movie!=null){
+        if (movie != null) {
 
             viewPager = findViewById(R.id.movie_details_viewpager_id);
-            viewPager.setAdapter(new MovieDetailPagerAdapter(getSupportFragmentManager(),movie.getMovieId(),this));
+            viewPager.setAdapter(new MovieDetailPagerAdapter(getSupportFragmentManager(), movie.getMovieId(), this));
 
             Picasso.get()
-                    .load(getResources().getString(R.string.movieposter_baseurl_w500)+movie.getPosterPath())
+                    .load(getResources().getString(R.string.movieposter_baseurl_w500) + movie.getPosterPath())
                     .placeholder(R.drawable.poster_notavailable)
                     .error(R.mipmap.ic_postererror)
                     .into(poster);
@@ -69,6 +90,34 @@ public class MovieDetailActivity extends AppCompatActivity {
             synopsis.setText(movie.getSynopsis());
         }
 
+
+        fav_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!getClickedFav()) {
+                    if(movie!=null){
+                        fav_icon.setImageResource(R.mipmap.ic_favourite);
+                       int rowid= MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().insertFavouriteMovie(movie);
+                        Toast.makeText(MovieDetailActivity.this, "inserted "+rowid, Toast.LENGTH_SHORT).show();
+                        setClickedFav(!getClickedFav());
+                    }else{
+                        Toast.makeText(MovieDetailActivity.this, "There is someproblem saving", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                else {
+                    if(movie!=null) {
+                        fav_icon.setImageResource(R.mipmap.ic_not_favourite);
+                        int rowid = MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().deleteFavouriteMovie(movie);
+                        Toast.makeText(MovieDetailActivity.this, "deleted " + rowid, Toast.LENGTH_SHORT).show();
+                        setClickedFav(!getClickedFav());
+                    }else{
+                        Toast.makeText(MovieDetailActivity.this, "There is some problem ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        });
 
     }
 }
