@@ -13,14 +13,23 @@ public class FavouriteViewModel extends ViewModel {
     private LiveData<List<SpecificMovieDetails>> favouritemovies;
     Context context;
     MovieDatabase database;
-   public FavouriteViewModel(Context context){
+
+   public FavouriteViewModel(Context context,MovieDatabase movieDatabase){
        this.context = context;
-       database = MovieDatabase.getMovieDatabase(context);
+       database = movieDatabase;
    }
 
-    private LiveData<List<SpecificMovieDetails>> loadFavouriteMovies(){
+    public LiveData<List<SpecificMovieDetails>> loadFavouriteMovies(){
         favouritemovies = database.favouiteMovieDao().getFavouriteMovies();
        return favouritemovies;
+    }
+
+    public void markFavouriteMovie(SpecificMovieDetails specificMovieDetails){
+        database.favouiteMovieDao().insertFavouriteMovie(specificMovieDetails);
+    }
+
+    public void removeFavouriteMovie(SpecificMovieDetails movieDetails){
+        database.favouiteMovieDao().deleteFavouriteMovie(movieDetails);
     }
 
 }

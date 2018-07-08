@@ -1,5 +1,7 @@
 package com.osiragames.moviebase;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -15,6 +17,8 @@ import com.osiragames.moviebase.database.MovieDatabase;
 import com.osiragames.moviebase.models.Movie;
 import com.osiragames.moviebase.models.SingletonMovieList;
 import com.osiragames.moviebase.models.SpecificMovieDetails;
+import com.osiragames.moviebase.models.viewmodels.FavouriteViewModel;
+import com.osiragames.moviebase.models.viewmodels.FavouriteViewModelFactory;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetailActivity extends AppCompatActivity {
@@ -94,30 +98,43 @@ public class MovieDetailActivity extends AppCompatActivity {
         fav_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!getClickedFav()) {
-                    if(movie!=null){
+                FavouriteViewModelFactory factory = new FavouriteViewModelFactory(movie,
+                        MovieDatabase.getMovieDatabase(getApplicationContext()),getApplicationContext());
+
+                if (fav_icon.getDrawable().getConstantState().equals(getResources().getDrawable(R.mipmap.ic_not_favourite))) {
+                    if (movie != null) {
                         fav_icon.setImageResource(R.mipmap.ic_favourite);
-                       int rowid= MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().insertFavouriteMovie(movie);
-                        Toast.makeText(MovieDetailActivity.this, "inserted "+rowid, Toast.LENGTH_SHORT).show();
+
+                         FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
+
+                         viewModel.markFavouriteMovie(movie);
+                       // MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().insertFavouriteMovie(movie);
+
                         setClickedFav(!getClickedFav());
-                    }else{
+                    } else {
                         Toast.makeText(MovieDetailActivity.this, "There is someproblem saving", Toast.LENGTH_SHORT).show();
                     }
 
-                }
-                else {
-                    if(movie!=null) {
+                } else {
+                    if (movie != null) {
                         fav_icon.setImageResource(R.mipmap.ic_not_favourite);
-                        int rowid = MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().deleteFavouriteMovie(movie);
-                        Toast.makeText(MovieDetailActivity.this, "deleted " + rowid, Toast.LENGTH_SHORT).show();
+                        FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
+                        viewModel.removeFavouriteMovie(movie);
+                       // MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().deleteFavouriteMovie(movie);
                         setClickedFav(!getClickedFav());
-                    }else{
+                    } else {
                         Toast.makeText(MovieDetailActivity.this, "There is some problem ", Toast.LENGTH_SHORT).show();
                     }
                 }
 
             }
         });
+    }
 
+
+        public void markFavouriteMovie(SpecificMovieDetails movie){
+FavouriteViewModel viewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
+
+viewModel.markFavouriteMovie(movie);
     }
 }

@@ -61,7 +61,7 @@ public class MovieServices {
 
             @Override
             public void onFailure(Call<ResponseMovies> call, Throwable t) {
-
+                Log.d(TAG, "onFailure: ");
             }
         });
     }

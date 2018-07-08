@@ -2,6 +2,7 @@ package com.osiragames.moviebase.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
@@ -9,29 +10,38 @@ import android.arch.persistence.room.PrimaryKey;
  */
 
 @Entity(tableName = "specific_movie_details")
-
 public class SpecificMovieDetails {
 
     @PrimaryKey(autoGenerate = true)
-    int id;
-    @PrimaryKey
-
-    @ColumnInfo(name = "movie_id")
-    int movieId;
+    private int id;
+     @ColumnInfo(name = "movie_id")
+     private int movieId;
     @ColumnInfo(name = "title")
-    String title;
+    private String title;
     @ColumnInfo(name = "poster_path")
-    String posterPath;
+    private String posterPath;
     @ColumnInfo(name = "thumbnail_poster")
-    String thumbail_poster;
+    private String thumbail_poster;
     @ColumnInfo(name = "user_rating")
-    String userRating;
+    private String userRating;
     @ColumnInfo(name = "release_date")
-    String releaseDate;
+    private String releaseDate;
     @ColumnInfo(name = "synopsis")
-    String Synopsis;
+    private String synopsis;
 
+    public SpecificMovieDetails(int id,int movieId, String title, String posterPath, String thumbail_poster,
+                                String userRating, String releaseDate, String synopsis) {
+        this.movieId = movieId;
+        this.id = id;
+        this.title = title;
+        this.posterPath = posterPath;
+        this.thumbail_poster = thumbail_poster;
+        this.userRating = userRating;
+        this.releaseDate = releaseDate;
+        this.synopsis = synopsis;
+    }
 
+@Ignore
     public SpecificMovieDetails(int movieId, String title, String posterPath, String thumbail_poster,
                                 String userRating, String releaseDate, String synopsis) {
         this.movieId = movieId;
@@ -40,7 +50,15 @@ public class SpecificMovieDetails {
         this.thumbail_poster = thumbail_poster;
         this.userRating = userRating;
         this.releaseDate = releaseDate;
-        Synopsis = synopsis;
+        this.synopsis = synopsis;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getMovieId() {
@@ -92,10 +110,10 @@ public class SpecificMovieDetails {
     }
 
     public String getSynopsis() {
-        return Synopsis;
+        return synopsis;
     }
 
     public void setSynopsis(String synopsis) {
-        Synopsis = synopsis;
+        this.synopsis = synopsis;
     }
 }

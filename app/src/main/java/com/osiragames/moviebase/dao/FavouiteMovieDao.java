@@ -24,5 +24,5 @@ public interface FavouiteMovieDao {
     public int deleteFavouriteMovie(SpecificMovieDetails favouriteMovie);
 
     @Insert(onConflict = REPLACE)
-    public int insertFavouriteMovie(SpecificMovieDetails favouriteMovies);
+    public void insertFavouriteMovie(SpecificMovieDetails favouriteMovies);
 }

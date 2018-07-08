@@ -14,18 +14,18 @@ import com.osiragames.moviebase.models.SpecificMovieDetails;
 
 import java.util.List;
 
-@Database(entities = {SpecificMovieDetails.class, FavouriteMovieReview.class},version = 1,exportSchema = false)
+@Database(entities = {SpecificMovieDetails.class},version = 1,exportSchema = false)
 public abstract class MovieDatabase extends RoomDatabase {
     public static final String TAG = MovieDatabase.class.getSimpleName();
     private static final String DATABASE_NAME ="movie_database";
     private static final Object LOCK = new Object();
-    static MovieDatabase moviedb;
+    public static MovieDatabase moviedb;
     public static MovieDatabase getMovieDatabase(Context context){
         if(moviedb == null){
             synchronized (LOCK){
 
                 Log.d(TAG, "getMovieDatabase: creating");
-                moviedb = Room.databaseBuilder(context,
+                moviedb = Room.databaseBuilder(context.getApplicationContext(),
                         MovieDatabase.class, DATABASE_NAME).build();
             }
         }
@@ -34,7 +34,5 @@ public abstract class MovieDatabase extends RoomDatabase {
         return moviedb;
     }
 
-
   public abstract FavouiteMovieDao favouiteMovieDao();
-    public abstract FavouriteMovieReviewDao favouriteMovieReviewDao();
 }
