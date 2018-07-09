@@ -1,7 +1,9 @@
 package com.osiragames.moviebase;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -33,19 +35,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     TextView title, date, synopsis, rating;
     ViewPager viewPager;
     ImageView fav_icon;
-    boolean clickedFav;
+    boolean isFav;
 
-    public boolean isClickedFav() {
-        return clickedFav;
-    }
-
-    public void setClickedFav(boolean clickedFav) {
-        this.clickedFav = clickedFav;
-    }
-
-    public boolean getClickedFav() {
-        return clickedFav;
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,7 +66,20 @@ public class MovieDetailActivity extends AppCompatActivity {
         synopsis = findViewById(R.id.moviebasic_details_synopsisid);
         date = findViewById(R.id.moviebasic_details_releasdateid);
         fav_icon = findViewById(R.id.fav_icon);
-        clickedFav = false;
+        //setting the fav image
+
+        final FavouriteViewModelFactory factory = new FavouriteViewModelFactory(movie,
+                MovieDatabase.getMovieDatabase(getApplicationContext()), getApplicationContext());
+        FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this, factory).get(FavouriteViewModel.class);
+
+        viewModel.findFavouriteMovieinDB(movie).observe(this, new Observer<SpecificMovieDetails>() {
+            @Override
+            public void onChanged(@Nullable SpecificMovieDetails movieDetails) {
+                if (movieDetails == null) fav_icon.setImageResource(R.drawable.ic_not_favourite);
+                else fav_icon.setImageResource(R.drawable.ic_favourite);
+            }
+        });
+
 
         if (movie != null) {
 
@@ -98,30 +102,30 @@ public class MovieDetailActivity extends AppCompatActivity {
         fav_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FavouriteViewModelFactory factory = new FavouriteViewModelFactory(movie,
-                        MovieDatabase.getMovieDatabase(getApplicationContext()),getApplicationContext());
 
-                if (fav_icon.getDrawable().getConstantState().equals(getResources().getDrawable(R.mipmap.ic_not_favourite))) {
+                if (fav_icon.getDrawable().getCurrent().getConstantState().equals(
+                        getResources().getDrawable(R.drawable.ic_not_favourite).getCurrent().getConstantState())) {
                     if (movie != null) {
-                        fav_icon.setImageResource(R.mipmap.ic_favourite);
+                        fav_icon.setImageResource(R.drawable.ic_favourite);
 
-                         FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
+                        FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this, factory).get(FavouriteViewModel.class);
 
-                         viewModel.markFavouriteMovie(movie);
-                       // MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().insertFavouriteMovie(movie);
+                        viewModel.markFavouriteMovie(movie);
+                        // MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().insertFavouriteMovie(movie);
 
-                        setClickedFav(!getClickedFav());
+
                     } else {
                         Toast.makeText(MovieDetailActivity.this, "There is someproblem saving", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
                     if (movie != null) {
-                        fav_icon.setImageResource(R.mipmap.ic_not_favourite);
-                        FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
+                        fav_icon.setImageResource(R.drawable.ic_not_favourite);
+
+                        FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this, factory).get(FavouriteViewModel.class);
                         viewModel.removeFavouriteMovie(movie);
-                       // MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().deleteFavouriteMovie(movie);
-                        setClickedFav(!getClickedFav());
+                        // MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().deleteFavouriteMovie(movie);
+
                     } else {
                         Toast.makeText(MovieDetailActivity.this, "There is some problem ", Toast.LENGTH_SHORT).show();
                     }
@@ -132,9 +136,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
 
-        public void markFavouriteMovie(SpecificMovieDetails movie){
-FavouriteViewModel viewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
+    public void markFavouriteMovie(SpecificMovieDetails movie) {
+        FavouriteViewModel viewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
 
-viewModel.markFavouriteMovie(movie);
+        viewModel.markFavouriteMovie(movie);
     }
 }

@@ -32,4 +32,8 @@ public class FavouriteViewModel extends ViewModel {
         database.favouiteMovieDao().deleteFavouriteMovie(movieDetails);
     }
 
+    public LiveData<SpecificMovieDetails> findFavouriteMovieinDB(SpecificMovieDetails movieDetails){
+      return database.favouiteMovieDao().getFavoriteMovie(movieDetails.getMovieId());
+    }
+
 }
