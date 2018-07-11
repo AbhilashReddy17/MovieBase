@@ -61,8 +61,7 @@
         android:gravity="right"
         android:text="date"
         android:textColor="@android:color/darker_gray"
-        android:textSize="14sp
-"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/moviebasic_details_titleid" />
@@ -81,8 +80,9 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/fav_icon"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/moviebasic_details_releasdateid" />
 
@@ -126,12 +126,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/moviebasic_detials_ratingid"
+        android:src="@drawable/ic_not_favourite"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/moviebasic_detials_ratingid"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@mipmap/ic_not_favourite" />
+        app:layout_constraintStart_toStartOf="@+id/guideline2" />
 </android.support.constraint.ConstraintLayout>
