@@ -17,7 +17,7 @@ public interface FavouiteMovieDao {
     @Query("SELECT * from specific_movie_details")
     public LiveData<List<SpecificMovieDetails>> getFavouriteMovies();
 
-    @Query("SELECT * from specific_movie_details where id = :id")
+    @Query("SELECT * from specific_movie_details where movie_id = :id")
     public LiveData<SpecificMovieDetails> getFavoriteMovie(int id);
 
     @Delete

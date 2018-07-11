@@ -15,6 +15,7 @@ import android.widget.Switch;
 
 import com.osiragames.moviebase.R;
 import com.osiragames.moviebase.fragments.PopularMoviesFragment;
+import com.osiragames.moviebase.fragments.SavedFavouriteMovies;
 import com.osiragames.moviebase.fragments.TopRatedMoviesFragment;
 
 /**
@@ -24,32 +25,45 @@ import com.osiragames.moviebase.fragments.TopRatedMoviesFragment;
 public class HomePagerAdapter extends FragmentStatePagerAdapter {
 
     Context context;
-  public HomePagerAdapter(FragmentManager fragmentManager,Context context){
-      super(fragmentManager);
-      this.context = context;
+
+    public HomePagerAdapter(FragmentManager fragmentManager, Context context) {
+        super(fragmentManager);
+        this.context = context;
     }
 
 
     @Override
     public Fragment getItem(int position) {
-      if(position == 0){
-          return PopularMoviesFragment.getInstance();
+        switch (position) {
+            case 0:
+                return PopularMoviesFragment.getInstance();
+            case 1:
+                return TopRatedMoviesFragment.getInstance();
+            case 2:
+                return SavedFavouriteMovies.getinstance();
+            default:
+                return null;
+        }
 
-      }else{
-         return TopRatedMoviesFragment.getInstance();
-      }
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-
-     if(position == 0) return context.getResources().getString(R.string.popular_movies);
-     else return context.getResources().getString(R.string.top_rated_movies);
+        switch (position) {
+            case 0:
+                return "Popular Movies";
+            case 1:
+                return "Top Rated Movies";
+            case 2:
+                return "Favourite Movies";
+            default:
+                return null;
+        }
     }
 }

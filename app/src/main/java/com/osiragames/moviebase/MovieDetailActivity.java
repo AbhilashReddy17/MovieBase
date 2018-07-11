@@ -23,6 +23,8 @@ import com.osiragames.moviebase.models.viewmodels.FavouriteViewModel;
 import com.osiragames.moviebase.models.viewmodels.FavouriteViewModelFactory;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class MovieDetailActivity extends AppCompatActivity {
 
     public static final String MOVIE_POSITION = "pos_movie";
@@ -42,12 +44,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_details);
 
-
+        final FavouriteViewModelFactory factory = new FavouriteViewModelFactory(
+                MovieDatabase.getMovieDatabase(getApplicationContext()),getApplicationContext());
         movieType = getIntent().getIntExtra(MOVIE_TYPE, 1);
         moview_pos = getIntent().getIntExtra(MOVIE_POSITION, 1);
 
         switch (movieType) {
-            //movie type 1 = popular movies, 2 = top rated movies
+            //movie type 1 = popular movies, 2 = top rated movies, 3= favourite movies
             case 1:
                 movie = SingletonMovieList.getInstance().getPopularMovies().get(moview_pos);
                 break;
@@ -55,10 +58,69 @@ public class MovieDetailActivity extends AppCompatActivity {
             case 2:
                 movie = SingletonMovieList.getTopRatedMovies().get(moview_pos);
                 break;
+            case 3:
+                FavouriteViewModel model = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
+                model.loadFavouriteMovies().observe(this, new Observer<List<SpecificMovieDetails>>() {
+                    @Override
+                    public void onChanged(@Nullable List<SpecificMovieDetails> specificMovieDetails) {
+                        movie = specificMovieDetails.get(moview_pos);
+                        setupView(factory);
+                        return;
+                    }
+                });
+
             default:
                 movie = null;
         }
 
+        setupView(factory);
+
+
+
+//          viewModel.markFavouriteMovie(movie);
+
+        fav_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FavouriteViewModelFactory factory = new FavouriteViewModelFactory(
+                        MovieDatabase.getMovieDatabase(getApplicationContext()),getApplicationContext());
+                Drawable.ConstantState constantState = fav_icon.getDrawable().getConstantState();
+                Drawable.ConstantState constantState1 = getResources().getDrawable(R.mipmap.ic_not_favourite).getConstantState();
+
+                if (fav_icon.getDrawable().getConstantState().equals(getResources().getDrawable(R.mipmap.ic_not_favourite).getConstantState())) {
+                    if (movie != null) {
+                        fav_icon.setImageResource(R.mipmap.ic_favourite);
+
+                         FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
+
+                         SpecificMovieDetails details = new SpecificMovieDetails(movie.getMovieId(),
+                                 movie.getTitle(),movie.getPosterPath(),movie.getThumbail_poster(),movie.getUserRating(),
+                                 movie.getReleaseDate(),movie.getSynopsis());
+                         viewModel.markFavouriteMovie(details);
+
+                       // MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().insertFavouriteMovie(movie);
+
+                    } else {
+                        Toast.makeText(MovieDetailActivity.this, "There is someproblem saving", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                } else {
+                    if (movie != null) {
+                        fav_icon.setImageResource(R.mipmap.ic_not_favourite);
+                        FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
+                        viewModel.removeFavouriteMovie(movie);
+                       // MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().deleteFavouriteMovie(movie);
+                    } else {
+                        Toast.makeText(MovieDetailActivity.this, "There is some problem ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        });
+    }
+
+    private void setupView(FavouriteViewModelFactory factory) {
         poster = findViewById(R.id.moviebasic_details_posterid);
         title = findViewById(R.id.moviebasic_details_titleid);
         rating = findViewById(R.id.moviebasic_detials_ratingid);
@@ -82,57 +144,17 @@ public class MovieDetailActivity extends AppCompatActivity {
             date.setText(movie.getReleaseDate());
             rating.setText(movie.getUserRating());
             synopsis.setText(movie.getSynopsis());
-        }
-        FavouriteViewModelFactory factory = new FavouriteViewModelFactory(movie,
-                MovieDatabase.getMovieDatabase(getApplicationContext()),getApplicationContext());
-        FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
-        viewModel.getFavouriteMovie(Integer.parseInt(movie.getMovieId())).observe(this, new Observer<SpecificMovieDetails>() {
-            @Override
-            public void onChanged(@Nullable SpecificMovieDetails movieDetails) {
-                if(movieDetails == null)
-                    fav_icon.setImageResource(R.mipmap.ic_not_favourite);
-                else
-                    fav_icon.setImageResource(R.mipmap.ic_favourite);
-            }
-        });
-
-//          viewModel.markFavouriteMovie(movie);
-
-        fav_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FavouriteViewModelFactory factory = new FavouriteViewModelFactory(movie,
-                        MovieDatabase.getMovieDatabase(getApplicationContext()),getApplicationContext());
-                Drawable.ConstantState constantState = fav_icon.getDrawable().getConstantState();
-                Drawable.ConstantState constantState1 = getResources().getDrawable(R.mipmap.ic_not_favourite).getConstantState();
-
-                if (fav_icon.getDrawable().getConstantState().equals(getResources().getDrawable(R.mipmap.ic_not_favourite).getConstantState())) {
-                    if (movie != null) {
-                        fav_icon.setImageResource(R.mipmap.ic_favourite);
-
-                         FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
-
-                         viewModel.markFavouriteMovie(movie);
-                       // MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().insertFavouriteMovie(movie);
-
-                    } else {
-                        Toast.makeText(MovieDetailActivity.this, "There is someproblem saving", Toast.LENGTH_SHORT).show();
-                    }
-
-
-                } else {
-                    if (movie != null) {
+            FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
+            viewModel.getFavouriteMovie(Integer.parseInt(movie.getMovieId())).observe(this, new Observer<SpecificMovieDetails>() {
+                @Override
+                public void onChanged(@Nullable SpecificMovieDetails movieDetails) {
+                    if(movieDetails == null)
                         fav_icon.setImageResource(R.mipmap.ic_not_favourite);
-                        FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
-                        viewModel.removeFavouriteMovie(movie);
-                       // MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().deleteFavouriteMovie(movie);
-                    } else {
-                        Toast.makeText(MovieDetailActivity.this, "There is some problem ", Toast.LENGTH_SHORT).show();
-                    }
+                    else
+                        fav_icon.setImageResource(R.mipmap.ic_favourite);
                 }
-
-            }
-        });
+            });
+        }
     }
 
 }

@@ -57,7 +57,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             public void onClick(View v) {
                 Intent intent = new Intent(context,MovieDetailActivity.class);
                 intent.putExtra(MovieDetailActivity.MOVIE_POSITION,position);
-               intent.putExtra(MovieDetailActivity.MOVIE_TYPE,movieType);
+               intent.putExtra(MovieDetailActivity.MOVIE_TYPE,movieType); //movie type 1 = popular movies, 2 = top rated movies, 3= favourite movies
                 context.startActivity(intent);
             }
         });

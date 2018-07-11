@@ -14,12 +14,11 @@ import com.osiragames.moviebase.models.SpecificMovieDetails;
 
 public class FavouriteViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    SpecificMovieDetails specificMovieDetails;
+
     MovieDatabase movieDatabase;
     Context context;
 
-    public FavouriteViewModelFactory(SpecificMovieDetails specificMovieDetails, MovieDatabase movieDatabase, Context context) {
-        this.specificMovieDetails = specificMovieDetails;
+    public FavouriteViewModelFactory(MovieDatabase movieDatabase, Context context) {
         this.movieDatabase = movieDatabase;
         this.context = context;
     }

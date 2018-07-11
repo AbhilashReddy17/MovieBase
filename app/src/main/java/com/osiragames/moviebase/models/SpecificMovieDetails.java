@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 /**
  * Created by ABHI on 7/3/2018.
@@ -12,8 +13,8 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "specific_movie_details")
 public class SpecificMovieDetails {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @PrimaryKey
+    @NonNull
      @ColumnInfo(name = "movie_id")
      private String movieId;
     @ColumnInfo(name = "title")
@@ -29,22 +30,10 @@ public class SpecificMovieDetails {
     @ColumnInfo(name = "synopsis")
     private String synopsis;
 
-    public SpecificMovieDetails(int id,String movieId, String title, String posterPath, String thumbail_poster,
-                                String userRating, String releaseDate, String synopsis) {
-        this.movieId = movieId;
-        this.id = id;
-        this.title = title;
-        this.posterPath = posterPath;
-        this.thumbail_poster = thumbail_poster;
-        this.userRating = userRating;
-        this.releaseDate = releaseDate;
-        this.synopsis = synopsis;
-    }
-
-@Ignore
     public SpecificMovieDetails(String movieId, String title, String posterPath, String thumbail_poster,
                                 String userRating, String releaseDate, String synopsis) {
         this.movieId = movieId;
+
         this.title = title;
         this.posterPath = posterPath;
         this.thumbail_poster = thumbail_poster;
@@ -53,13 +42,7 @@ public class SpecificMovieDetails {
         this.synopsis = synopsis;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getMovieId() {
         return movieId;
