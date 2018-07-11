@@ -70,7 +70,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         if (movie != null) {
 
             viewPager = findViewById(R.id.movie_details_viewpager_id);
-            viewPager.setAdapter(new MovieDetailPagerAdapter(getSupportFragmentManager(), movie.getMovieId(), this));
+            viewPager.setAdapter(new MovieDetailPagerAdapter(getSupportFragmentManager(),Integer.parseInt( movie.getMovieId()), this));
 
             Picasso.get()
                     .load(getResources().getString(R.string.movieposter_baseurl_w500) + movie.getPosterPath())
@@ -86,15 +86,17 @@ public class MovieDetailActivity extends AppCompatActivity {
         FavouriteViewModelFactory factory = new FavouriteViewModelFactory(movie,
                 MovieDatabase.getMovieDatabase(getApplicationContext()),getApplicationContext());
         FavouriteViewModel viewModel = ViewModelProviders.of(MovieDetailActivity.this,factory).get(FavouriteViewModel.class);
-        viewModel.getFavouriteMovie(movie.getMovieId()).observe(this, new Observer<SpecificMovieDetails>() {
+        viewModel.getFavouriteMovie(Integer.parseInt(movie.getMovieId())).observe(this, new Observer<SpecificMovieDetails>() {
             @Override
             public void onChanged(@Nullable SpecificMovieDetails movieDetails) {
-                if(movieDetails == null)   fav_icon.setImageResource(R.mipmap.ic_not_favourite);
-                else   fav_icon.setImageResource(R.mipmap.ic_favourite);
+                if(movieDetails == null)
+                    fav_icon.setImageResource(R.mipmap.ic_not_favourite);
+                else
+                    fav_icon.setImageResource(R.mipmap.ic_favourite);
             }
         });
 
-        viewModel.markFavouriteMovie(movie);
+//          viewModel.markFavouriteMovie(movie);
 
         fav_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +118,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(MovieDetailActivity.this, "There is someproblem saving", Toast.LENGTH_SHORT).show();
                     }
+
 
                 } else {
                     if (movie != null) {

@@ -52,7 +52,7 @@ public class SingletonMovieList {
                 for(int i=0;i<responseMovies.getResults().size();i++){
 
                     Movie movie =responseMovies.getResults().get(i);
-                    int movieId = movie.getId();
+                    String movieId = movie.getId()+"";
                     String title = movie.getOriginalTitle();
                     String posterPath = movie.getPosterPath() ;
                     String thumbail_poster = movie.getBackdropPath();

@@ -15,7 +15,7 @@ public class SpecificMovieDetails {
     @PrimaryKey(autoGenerate = true)
     private int id;
      @ColumnInfo(name = "movie_id")
-     private int movieId;
+     private String movieId;
     @ColumnInfo(name = "title")
     private String title;
     @ColumnInfo(name = "poster_path")
@@ -29,7 +29,7 @@ public class SpecificMovieDetails {
     @ColumnInfo(name = "synopsis")
     private String synopsis;
 
-    public SpecificMovieDetails(int id,int movieId, String title, String posterPath, String thumbail_poster,
+    public SpecificMovieDetails(int id,String movieId, String title, String posterPath, String thumbail_poster,
                                 String userRating, String releaseDate, String synopsis) {
         this.movieId = movieId;
         this.id = id;
@@ -42,7 +42,7 @@ public class SpecificMovieDetails {
     }
 
 @Ignore
-    public SpecificMovieDetails(int movieId, String title, String posterPath, String thumbail_poster,
+    public SpecificMovieDetails(String movieId, String title, String posterPath, String thumbail_poster,
                                 String userRating, String releaseDate, String synopsis) {
         this.movieId = movieId;
         this.title = title;
@@ -61,11 +61,11 @@ public class SpecificMovieDetails {
         this.id = id;
     }
 
-    public int getMovieId() {
+    public String getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(int movieId) {
+    public void setMovieId(String movieId) {
         this.movieId = movieId;
     }
 

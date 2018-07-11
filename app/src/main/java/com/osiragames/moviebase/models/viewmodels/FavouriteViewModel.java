@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.persistence.room.Query;
 import android.content.Context;
 
+import com.osiragames.moviebase.AppExecutors;
 import com.osiragames.moviebase.database.MovieDatabase;
 import com.osiragames.moviebase.models.SpecificMovieDetails;
 
@@ -22,6 +23,7 @@ public class FavouriteViewModel extends ViewModel {
 
     public LiveData<List<SpecificMovieDetails>> loadFavouriteMovies(){
         favouritemovies = database.favouiteMovieDao().getFavouriteMovies();
+
        return favouritemovies;
     }
 

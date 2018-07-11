@@ -40,9 +40,7 @@ public class MovieReviews {
             return (new MovieReviews[size]);
         }
 
-    }
-            ;
-    private final static long serialVersionUID = -3024496606172643323L;
+    };
 
     protected MovieReviews(Parcel in) {
         this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
@@ -107,8 +105,7 @@ public class MovieReviews {
         return 0;
     }
 
-    public class Result implements Serializable, Parcelable
-    {
+    public class Result implements Serializable, Parcelable {
 
         @SerializedName("author")
         @Expose
@@ -122,7 +119,7 @@ public class MovieReviews {
         @SerializedName("url")
         @Expose
         private String url;
-        public final  Parcelable.Creator<Result> CREATOR = new Creator<Result>() {
+        public final Parcelable.Creator<Result> CREATOR = new Creator<Result>() {
 
 
             @SuppressWarnings({
@@ -136,9 +133,7 @@ public class MovieReviews {
                 return (new Result[size]);
             }
 
-        }
-                ;
-        private final static long serialVersionUID = -368720328025786966L;
+        };
 
         protected Result(Parcel in) {
             this.author = ((String) in.readValue((String.class.getClassLoader())));
