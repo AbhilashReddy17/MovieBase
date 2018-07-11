@@ -2,6 +2,7 @@ package com.osiragames.moviebase.models.viewmodels;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.arch.persistence.room.Query;
 import android.content.Context;
 
 import com.osiragames.moviebase.database.MovieDatabase;
@@ -30,6 +31,10 @@ public class FavouriteViewModel extends ViewModel {
 
     public void removeFavouriteMovie(SpecificMovieDetails movieDetails){
         database.favouiteMovieDao().deleteFavouriteMovie(movieDetails);
+    }
+
+    public LiveData<SpecificMovieDetails> getFavouriteMovie(int movieid){
+        return database.favouiteMovieDao().getFavoriteMovie(movieid);
     }
 
 }
