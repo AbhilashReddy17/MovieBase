@@ -10,6 +10,7 @@ import java.util.List;
 public class SingletonMovieList {
 
    static SingletonMovieList singletonMovieList;
+    static List<FavouriteMovieReview> reviews;
     private SingletonMovieList(){}
 
     public static List<SpecificMovieDetails> popularMovies,topRatedMovies;
@@ -20,6 +21,14 @@ public class SingletonMovieList {
         }
 
         return singletonMovieList;
+    }
+
+    public static List<FavouriteMovieReview> getReviews() {
+        return reviews;
+    }
+
+    public static void setReviews(List<FavouriteMovieReview> re) {
+       reviews = re;
     }
 
     public static List<SpecificMovieDetails> getPopularMovies() {
@@ -38,12 +47,6 @@ public class SingletonMovieList {
         SingletonMovieList.topRatedMovies = topRatedMovies;
     }
 
-    public void addPopularMovie(SpecificMovieDetails movieDetails){
-        popularMovies.add(movieDetails);
-    }
-    public void addTopRatedMovie(SpecificMovieDetails movieDetails){
-        topRatedMovies.add(movieDetails);
-    }
 
     public static List<SpecificMovieDetails> getSpecificMovieDetailsList(ResponseMovies responseMovies){
         List<SpecificMovieDetails> specificMovieDetailsList;
@@ -67,5 +70,23 @@ public class SingletonMovieList {
                return specificMovieDetailsList;
         }
         return null;
+    }
+
+    public static List<FavouriteMovieReview> getFavouriteMovieReviews(MovieReviews movieReviews,int movieId){
+
+        List<FavouriteMovieReview> reviews =null;
+
+        if( null!= movieReviews && null!=movieReviews.getResults() && movieReviews.getResults().size()>0)
+        {
+            reviews = new ArrayList<>();
+            for(int i=0;i<movieReviews.getResults().size();i++){
+                List<MovieReviews.Result> results = movieReviews.getResults();
+                String author= results.get(i).getAuthor();
+                String content= results.get(i).getContent();
+                FavouriteMovieReview review = new FavouriteMovieReview(movieId,content,author);
+                reviews.add(review);
+            }
+        }
+        return reviews;
     }
 }

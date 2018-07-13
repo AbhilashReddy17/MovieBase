@@ -3,6 +3,7 @@ package com.osiragames.moviebase;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,9 +17,12 @@ import android.widget.Toast;
 
 import com.osiragames.moviebase.adapters.MovieDetailPagerAdapter;
 import com.osiragames.moviebase.database.MovieDatabase;
+import com.osiragames.moviebase.fragments.ReviewFragment;
 import com.osiragames.moviebase.models.Movie;
 import com.osiragames.moviebase.models.SingletonMovieList;
 import com.osiragames.moviebase.models.SpecificMovieDetails;
+import com.osiragames.moviebase.models.viewmodels.FavouriteMovieReviewFactory;
+import com.osiragames.moviebase.models.viewmodels.FavouriteMovieReviewViewModel;
 import com.osiragames.moviebase.models.viewmodels.FavouriteViewModel;
 import com.osiragames.moviebase.models.viewmodels.FavouriteViewModelFactory;
 import com.squareup.picasso.Picasso;
@@ -63,8 +67,13 @@ public class MovieDetailActivity extends AppCompatActivity {
                 model.loadFavouriteMovies().observe(this, new Observer<List<SpecificMovieDetails>>() {
                     @Override
                     public void onChanged(@Nullable List<SpecificMovieDetails> specificMovieDetails) {
-                        movie = specificMovieDetails.get(moview_pos);
-                        setupView(factory);
+                       if(specificMovieDetails !=null && specificMovieDetails.size() > moview_pos) {
+                               movie = specificMovieDetails.get(moview_pos);
+                               setupView(factory);
+                       }else{
+                           MovieDetailActivity.this.finish();
+                       }
+
                         return;
                     }
                 });
@@ -97,6 +106,16 @@ public class MovieDetailActivity extends AppCompatActivity {
                                  movie.getTitle(),movie.getPosterPath(),movie.getThumbail_poster(),movie.getUserRating(),
                                  movie.getReleaseDate(),movie.getSynopsis());
                          viewModel.markFavouriteMovie(details);
+
+
+                        final FavouriteMovieReviewFactory reviewfactory = new FavouriteMovieReviewFactory(MovieDatabase
+                                .getMovieDatabase(getApplicationContext().getApplicationContext()), getApplicationContext());
+
+                        FavouriteMovieReviewViewModel model = ViewModelProviders
+                                .of(MovieDetailActivity.this, reviewfactory).get(FavouriteMovieReviewViewModel.class);
+
+                        if(SingletonMovieList.getReviews()!=null)
+                        model.setFavouritemovieReviews(SingletonMovieList.getReviews());
 
                        // MovieDatabase.getMovieDatabase(getApplicationContext()).favouiteMovieDao().insertFavouriteMovie(movie);
 

@@ -48,12 +48,16 @@ public class TrailerFragment extends Fragment {
             @Override
             public void response(MovieVideos movieVideos) {
                 if(movieVideos != null){
-                    if(movieVideos.getResults()!=null)
+                    if(movieVideos.getResults()!=null) {
+                        recyclerView.setVisibility(View.VISIBLE);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
-                                LinearLayoutManager.VERTICAL,false));
+                                LinearLayoutManager.VERTICAL, false));
 
-                    recyclerView.setAdapter(new RecyclerviewAdapter(movieVideos.getResults()));
-                }
+                        recyclerView.setAdapter(new RecyclerviewAdapter(movieVideos.getResults()));
+                    }else{
+                        recyclerView.setVisibility(View.GONE);
+                    }
+                }else      recyclerView.setVisibility(View.GONE);
             }
         });
 

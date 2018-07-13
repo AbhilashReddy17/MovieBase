@@ -6,6 +6,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
+import com.osiragames.moviebase.models.MovieReviews;
 import com.osiragames.moviebase.models.SpecificMovieDetails;
 
 import java.util.List;
@@ -25,4 +26,5 @@ public interface FavouiteMovieDao {
 
     @Insert(onConflict = REPLACE)
     public void insertFavouriteMovie(SpecificMovieDetails favouriteMovies);
+
 }

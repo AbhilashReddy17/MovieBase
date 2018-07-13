@@ -14,7 +14,7 @@ import com.osiragames.moviebase.models.SpecificMovieDetails;
 
 import java.util.List;
 
-@Database(entities = {SpecificMovieDetails.class},version = 1,exportSchema = false)
+@Database(entities = {SpecificMovieDetails.class,FavouriteMovieReview.class},version = 1,exportSchema = false)
 public abstract class MovieDatabase extends RoomDatabase {
     public static final String TAG = MovieDatabase.class.getSimpleName();
     private static final String DATABASE_NAME ="movie_database";
@@ -37,4 +37,5 @@ public abstract class MovieDatabase extends RoomDatabase {
     }
 
   public abstract FavouiteMovieDao favouiteMovieDao();
+    public abstract FavouriteMovieReviewDao favouriteMovieReviewDao();
 }
