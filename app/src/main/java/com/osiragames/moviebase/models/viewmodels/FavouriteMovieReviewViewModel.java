@@ -9,6 +9,7 @@ import com.osiragames.moviebase.models.FavouriteMovieReview;
 import com.osiragames.moviebase.models.SpecificMovieDetails;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 /**
  * Created by ABHI on 7/11/2018.
@@ -18,9 +19,9 @@ public class FavouriteMovieReviewViewModel extends ViewModel {
     Context context;
     MovieDatabase database;
 
-    public FavouriteMovieReviewViewModel( Context context, MovieDatabase database) {
+    public FavouriteMovieReviewViewModel( Context context) {
         this.context = context;
-        this.database = database;
+        this.database = MovieDatabase.getMovieDatabase(context);
     }
 
     public LiveData<List<FavouriteMovieReview>> getFavouritemovieReviews(int movieid) {
@@ -28,8 +29,14 @@ public class FavouriteMovieReviewViewModel extends ViewModel {
 
     }
 
-    public void setFavouritemovieReviews(List<FavouriteMovieReview> favouritemovieReviews) {
-        database.favouriteMovieReviewDao().loadFavouriteMovieReviews(favouritemovieReviews);
+    public void setFavouritemovieReviews(final List<FavouriteMovieReview> favouritemovieReviews) {
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                database.favouriteMovieReviewDao().loadFavouriteMovieReviews(favouritemovieReviews);
+
+            }
+        });
     }
 
 

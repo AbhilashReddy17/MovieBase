@@ -56,6 +56,8 @@ public class ReviewFragment extends Fragment {
                             List<FavouriteMovieReview> reviews = SingletonMovieList.getFavouriteMovieReviews(movieReview, movieId);
                             SingletonMovieList.setReviews(reviews);
                             recyclerView.setAdapter(new RecyclerviewAdapter(reviews));
+                        }else{
+                            recyclerView.setVisibility(View.GONE);
                         }
 
                     } else {

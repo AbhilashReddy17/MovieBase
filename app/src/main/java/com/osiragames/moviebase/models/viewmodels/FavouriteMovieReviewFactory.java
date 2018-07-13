@@ -24,6 +24,6 @@ public class FavouriteMovieReviewFactory extends ViewModelProvider.NewInstanceFa
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new FavouriteMovieReviewViewModel(context,movieDatabase);
+        return (T) new FavouriteMovieReviewViewModel(context);
     }
 }

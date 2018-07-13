@@ -10,9 +10,9 @@
     <string name="top_rated_movies">TopRated Movies</string>
     <string name="i_tried">I tried :(</string>
     <string name="more">Swipe up for More</string>
-    <string name="api_key_1"></string>
-
     <string name="api_key"></string>
+
+    <string name="api_key_1"></string>
     <string name="collapsing_toolbar">Collapsing Toolbar</string>
     <string name="movieposter_baseurl_w500">https://image.tmdb.org/t/p/w500</string>
     <string name="movieposter_baseurl_w185">https://image.tmdb.org/t/p/w185</string>

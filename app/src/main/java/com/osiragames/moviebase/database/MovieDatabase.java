@@ -27,7 +27,6 @@ public abstract class MovieDatabase extends RoomDatabase {
                 Log.d(TAG, "getMovieDatabase: creating");
                 moviedb = Room.databaseBuilder(context.getApplicationContext(),
                         MovieDatabase.class, DATABASE_NAME)
-                        .allowMainThreadQueries()
                         .build();
             }
         }
